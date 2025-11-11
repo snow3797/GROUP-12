@@ -23,7 +23,7 @@ This project integrates **machine learning**, **RESTful API deployment**, and **
 The system allows users to upload an image of a maize leaf.  
 The backend processes the image, predicts the disease using a **Convolutional Neural Network (CNN)** (ResNet50-based model), and generates a short description and treatment advice using the **OpenAI API**.
 
-The results are then stored in a **SQL Server database** along with image metadata for further reference.
+The results are then stored in a **SQL Server database** along with image metadata for further reference and future retraining an fine tuning.
 
 ---
 
@@ -35,8 +35,8 @@ It contains images of healthy and infected maize leaves with multiple disease ca
 
 - **Common Rust**
 - **Gray Leaf Spot**
-- **Northern Leaf Blight**
-- **Healthy Leaves**
+- **Blight**
+- **Healthy**
 
 **Justification:**  
 The dataset was chosen because of its high-quality labeled images, balanced class representation, and relevance to real-world agricultural issues.
