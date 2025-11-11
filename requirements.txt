@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+scikit-learn
+numpy
+pandas
+opencv-python-headless
+opencv-contrib-python-headless
+scikit-image
+joblib
+matplotlib
+tensorflow>=2.6
+pillow
+tqdm
+keras
+pyodbc
+openai
+python-multipart

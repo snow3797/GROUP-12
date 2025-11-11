@@ -1,0 +1,7 @@
+Found 249 images belonging to 4 classes.
+[1m8/8[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m19s[0m 2s/step
+Model Evaluation Metrics:
+Accuracy: 0.8193
+Precision (weighted): 0.8090
+Recall (weighted): 0.8193
+F1 Score (weighted): 0.8133

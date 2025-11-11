@@ -1,0 +1,31 @@
+Maize Disease Detection System
+│
+├── server
+│   ├── ART.py
+│   ├── cnn_model_load.py
+│   ├── DB_integration.py
+│   ├── main.py
+│   ├── artifacts
+│   │   └── label_encoder.py
+│   ├── EDA
+│   │   ├── edatwo.py
+│   │   ├── image_quality_analysis.py
+│   │   └── Visualisation.py
+│   ├── evaluation
+│   │   └── eval.py
+│   └── src
+│       ├── utils.py
+│       ├── models
+│       │   └── cnn_model.keras
+│       └── train_cnn.ipynb
+│
+├── frontend
+│   └── index.html
+│
+├── notebooks
+│   └── train_cnn.ipynb
+│
+├── project_structure.txt
+└── requirements.txt
+
+

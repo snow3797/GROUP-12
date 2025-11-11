@@ -1,0 +1,10 @@
+
+Classification Report (Per-Class):
+                precision    recall  f1-score     support
+Blight           0.698413  0.647059  0.671756   68.000000
+Common_Rust      0.939759  1.000000  0.968944   78.000000
+Gray_Leaf_Spot   0.483871  0.441176  0.461538   34.000000
+Healthy          0.930556  0.971014  0.950355   69.000000
+accuracy         0.819277  0.819277  0.819277    0.819277
+macro avg        0.763150  0.764812  0.763148  249.000000
+weighted avg     0.809049  0.819277  0.813349  249.000000

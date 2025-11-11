@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌽 Maize Disease Detection</title>
+    <style>
+        :root {
+            --primary-green: #4CAF50;
+            --light-green: #8BC34A;
+            --dark-green: #388E3C;
+            --accent-yellow: #FFC107;
+            --accent-brown: #795548;
+            --light-bg: #F9F9F9;
+            --white: #FFFFFF;
+            --gray: #757575;
+            --dark-gray: #424242;
+            --error-red: #F44336;
+            --success-green: #4CAF50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: var(--dark-green);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: var(--gray);
+            font-size: 1.2rem;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .upload-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chat-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .section-title {
+            color: var(--dark-green);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-green);
+            font-size: 1.5rem;
+        }
+        
+        .upload-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .upload-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            border: 2px dashed var(--light-green);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-option:hover {
+            background-color: rgba(139, 195, 74, 0.1);
+            border-color: var(--dark-green);
+        }
+        
+        .upload-icon {
+            font-size: 24px;
+        }
+        
+        .upload-text {
+            flex: 1;
+        }
+        
+        .upload-text h3 {
+            margin-bottom: 5px;
+            color: var(--dark-green);
+        }
+        
+        .upload-text p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .preview-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .preview-title {
+            margin-bottom: 10px;
+            color: var(--dark-green);
+        }
+        
+        .image-preview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            border: 1px solid var(--light-green);
+            display: none;
+        }
+        
+        .send-button {
+            margin-top: 20px;
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .send-button:hover {
+            background-color: var(--dark-green);
+        }
+        
+        .send-button:disabled {
+            background-color: var(--gray);
+            cursor: not-allowed;
+        }
+        
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            max-height: 500px;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            max-width: 80%;
+        }
+        
+        .user-message {
+            background-color: #E8F5E9;
+            margin-left: auto;
+            border-bottom-right-radius: 0;
+        }
+        
+        .system-message {
+            background-color: #F1F8E9;
+            margin-right: auto;
+            border-bottom-left-radius: 0;
+        }
+        
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .user-header {
+            color: var(--dark-green);
+        }
+        
+        .system-header {
+            color: var(--accent-brown);
+        }
+        
+        .message-content {
+            line-height: 1.5;
+        }
+        
+        .disease-name {
+            color: var(--dark-green);
+            font-weight: bold;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--primary-green);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            color: var(--error-red);
+            background-color: #FFEBEE;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .success-message {
+            color: var(--success-green);
+            background-color: #E8F5E9;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .debug-info {
+            background-color: #FFF3E0;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .test-button {
+            background-color: #2196F3;
+            margin-right: 10px;
+        }
+        
+        .test-button:hover {
+            background-color: #1976D2;
+        }
+        
+        .debug-toggle {
+            background-color: #FF9800;
+            margin-top: 10px;
+        }
+        
+        .debug-toggle:hover {
+            background-color: #F57C00;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌽 Maize Disease Detection</h1>
+            <p class="subtitle">Upload a maize leaf image to detect diseases and get AI-powered insights</p>
+        </header>
+        
+        <div class="main-content">
+            <section class="upload-section">
+                <h2 class="section-title">📤 Upload Image</h2>
+                
+                <div class="upload-options">
+                    <div class="upload-option" id="file-explorer-option">
+                        <div class="upload-icon">📁</div>
+                        <div class="upload-text">
+                            <h3>File Explorer</h3>
+                            <p>Select an image from your device</p>
+                        </div>
+                    </div>
+                    
+                    <div class="upload-option" id="drag-drop-option">
+                        <div class="upload-icon">⬆️</div>
+                        <div class="upload-text">
+                            <h3>Drag & Drop</h3>
+                            <p>Drag and drop an image here</p>
+                        </div>
+                    </div>
+                    
+                    <div class="upload-option" id="camera-option">
+                        <div class="upload-icon">📷</div>
+                        <div class="upload-text">
+                            <h3>Camera</h3>
+                            <p>Take a photo using your camera</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <input type="file" id="file-input" class="file-input" accept="image/*">
+                <input type="file" id="camera-input" class="file-input" accept="image/*" capture="environment">
+                
+                <div class="preview-container">
+                    <h3 class="preview-title">Image Preview</h3>
+                    <img id="image-preview" class="image-preview" alt="Image preview">
+                </div>
+                
+                <button id="send-button" class="send-button" disabled>
+                    <span>🔍 Analyze Image</span>
+                </button>
+                
+                <div class="loading" id="loading-indicator">
+                    <div class="spinner"></div>
+                    <p>Analyzing your image... This may take a few moments.</p>
+                </div>
+                
+                <div class="error-message" id="error-message"></div>
+                <div class="success-message" id="success-message"></div>
+                
+                <!-- Debug Information -->
+                <div class="debug-info" id="debug-info"></div>
+                
+                <button id="debug-toggle" class="send-button debug-toggle">
+                    <span>🐛 Toggle Debug Info</span>
+                </button>
+                
+                <!-- Test buttons -->
+                <div style="margin-top: 20px;">
+                    <button id="test-health-button" class="send-button test-button">
+                        <span>🏥 Test Health Endpoint</span>
+                    </button>
+                    <button id="test-api-button" class="send-button">
+                        <span>🧪 Test Analyze Endpoint</span>
+                    </button>
+                </div>
+            </section>
+            
+            <section class="chat-section">
+                <h2 class="section-title">💬 Analysis Results</h2>
+                
+                <div class="chat-container" id="chat-container">
+                    <div class="message system-message">
+                        <div class="message-header system-header">
+                            <span>🌽</span>
+                            <span>Maize Assistant</span>
+                        </div>
+                        <div class="message-content">
+                            Welcome! Upload an image of a maize leaf to detect diseases and get detailed information about symptoms, causes, and treatments.
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM elements
+            const fileInput = document.getElementById('file-input');
+            const cameraInput = document.getElementById('camera-input');
+            const fileExplorerOption = document.getElementById('file-explorer-option');
+            const dragDropOption = document.getElementById('drag-drop-option');
+            const cameraOption = document.getElementById('camera-option');
+            const imagePreview = document.getElementById('image-preview');
+            const sendButton = document.getElementById('send-button');
+            const loadingIndicator = document.getElementById('loading-indicator');
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
+            const chatContainer = document.getElementById('chat-container');
+            const debugInfo = document.getElementById('debug-info');
+            const testApiButton = document.getElementById('test-api-button');
+            const testHealthButton = document.getElementById('test-health-button');
+            const debugToggle = document.getElementById('debug-toggle');
+            
+            // Current image file
+            let currentImageFile = null;
+            
+            // Event listeners for upload options
+            fileExplorerOption.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            cameraOption.addEventListener('click', () => {
+                cameraInput.click();
+            });
+            
+            testApiButton.addEventListener('click', testAnalyzeEndpoint);
+            testHealthButton.addEventListener('click', testHealthEndpoint);
+            debugToggle.addEventListener('click', () => {
+                debugInfo.style.display = debugInfo.style.display === 'none' ? 'block' : 'none';
+            });
+            
+            // Handle file selection
+            fileInput.addEventListener('change', handleFileSelect);
+            cameraInput.addEventListener('change', handleFileSelect);
+            
+            // Drag and drop functionality
+            dragDropOption.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dragDropOption.style.backgroundColor = 'rgba(139, 195, 74, 0.2)';
+            });
+            
+            dragDropOption.addEventListener('dragleave', () => {
+                dragDropOption.style.backgroundColor = '';
+            });
+            
+            dragDropOption.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dragDropOption.style.backgroundColor = '';
+                
+                if (e.dataTransfer.files.length) {
+                    handleFile(e.dataTransfer.files[0]);
+                }
+            });
+            
+            // Send button click
+            sendButton.addEventListener('click', sendImageForAnalysis);
+            
+            // Handle file selection
+            function handleFileSelect(event) {
+                if (event.target.files && event.target.files[0]) {
+                    handleFile(event.target.files[0]);
+                }
+            }
+            
+            // Process the selected file
+            function handleFile(file) {
+                // Check if file is an image
+                if (!file.type.match('image.*')) {
+                    showError('Please select an image file (JPEG, PNG, etc.)');
+                    return;
+                }
+                
+                currentImageFile = file;
+                
+                // Preview the image
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                    sendButton.disabled = false;
+                    hideError();
+                };
+                reader.readAsDataURL(file);
+                
+                // Add user message to chat
+                addMessageToChat('user', `📷 Image uploaded: ${file.name} (${(file.size / 1024).toFixed(2)} KB)`);
+            }
+            
+            // Test health endpoint
+            async function testHealthEndpoint() {
+                const healthEndpoint = "/health";  // Relative URL
+                showDebugInfo(`Testing health endpoint: ${healthEndpoint}`);
+                
+                try {
+                    const response = await fetch(healthEndpoint, {
+                        method: 'GET'
+                    });
+                    
+                    showDebugInfo(`Health check response: ${response.status} ${response.statusText}`);
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        showDebugInfo(`Health response: ${JSON.stringify(result)}`);
+                        showSuccess('Health check passed! API is running correctly.');
+                        addMessageToChat('system', `✅ API Health Check: ${result.status} - ${result.message}`);
+                    } else {
+                        throw new Error(`Health check failed: ${response.status} ${response.statusText}`);
+                    }
+                } catch (error) {
+                    showDebugInfo(`Health check error: ${error.message}`);
+                    showError(`Health check failed: ${error.message}`);
+                    addMessageToChat('system', `❌ API Health Check Failed: ${error.message}`);
+                }
+            }
+            
+            // Test analyze endpoint with a simple request
+            async function testAnalyzeEndpoint() {
+                const analyzeEndpoint = "/analyze/";  // Relative URL
+                showDebugInfo(`Testing analyze endpoint: ${analyzeEndpoint}`);
+                
+                // Create a simple test with a small fake file to test the endpoint
+                try {
+                    // Create a simple test blob (empty file)
+                    const blob = new Blob(['test'], { type: 'image/jpeg' });
+                    const testFile = new File([blob], 'test.jpg', { type: 'image/jpeg' });
+                    
+                    const formData = new FormData();
+                    formData.append('image', testFile);
+                    
+                    showDebugInfo('Sending test request to analyze endpoint...');
+                    
+                    const response = await fetch(analyzeEndpoint, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    showDebugInfo(`Analyze endpoint response: ${response.status} ${response.statusText}`);
+                    
+                    if (response.status === 500) {
+                        // This is expected since we're sending invalid image data
+                        const errorText = await response.text();
+                        showDebugInfo(`Expected error (testing with invalid image): ${errorText}`);
+                        showSuccess('Analyze endpoint is reachable! (Got expected error for invalid image)');
+                        addMessageToChat('system', '✅ Analyze endpoint is reachable (test with invalid image returned expected error)');
+                    } else if (response.ok) {
+                        const result = await response.json();
+                        showDebugInfo(`Unexpected success: ${JSON.stringify(result)}`);
+                        showSuccess('Analyze endpoint is working!');
+                        addMessageToChat('system', `✅ Analyze endpoint test successful: ${result.status}`);
+                    } else {
+                        throw new Error(`Unexpected response: ${response.status} ${response.statusText}`);
+                    }
+                } catch (error) {
+                    showDebugInfo(`Analyze endpoint test error: ${error.message}`);
+                    showError(`Analyze endpoint test failed: ${error.message}`);
+                    addMessageToChat('system', `❌ Analyze endpoint test failed: ${error.message}`);
+                }
+            }
+            
+            // Send image to API for analysis
+            async function sendImageForAnalysis() {
+                if (!currentImageFile) {
+                    showError('Please select an image first');
+                    return;
+                }
+                
+                // Show loading indicator
+                loadingIndicator.style.display = 'block';
+                sendButton.disabled = true;
+                hideError();
+                hideSuccess();
+                showDebugInfo('Starting analysis...');
+                
+                try {
+                    // Create form data
+                    const formData = new FormData();
+                    formData.append('image', currentImageFile);
+                    
+                    // Use relative URL
+                    const analyzeEndpoint = "/analyze/";
+                    
+                    showDebugInfo(`Sending request to: ${analyzeEndpoint}`);
+                    showDebugInfo(`File: ${currentImageFile.name} (${currentImageFile.type}, ${currentImageFile.size} bytes)`);
+                    
+                    // Send to FastAPI endpoint
+                    const response = await fetch(analyzeEndpoint, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    showDebugInfo(`Response status: ${response.status} ${response.statusText}`);
+                    showDebugInfo(`Response headers: ${JSON.stringify(Object.fromEntries([...response.headers]))}`);
+                    
+                    if (!response.ok) {
+                        let errorText = 'No error details';
+                        try {
+                            errorText = await response.text();
+                        } catch (e) {
+                            errorText = 'Could not read error response';
+                        }
+                        throw new Error(`Server returned ${response.status}: ${response.statusText}. ${errorText}`);
+                    }
+                    
+                    // Check if response is JSON
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('application/json')) {
+                        const text = await response.text();
+                        showDebugInfo(`Non-JSON response: ${text}`);
+                        throw new Error(`Expected JSON response but got: ${contentType}`);
+                    }
+                    
+                    const result = await response.json();
+                    showDebugInfo(`Response received: ${JSON.stringify(result, null, 2)}`);
+                    
+                    // Hide loading indicator
+                    loadingIndicator.style.display = 'none';
+                    sendButton.disabled = false;
+                    
+                    // Display results in chat
+                    if (result.status === 'success') {
+                        addMessageToChat('system', 
+                            `🔍 <strong>Analysis Complete</strong><br><br>
+                            <strong>Detected Disease:</strong> <span class="disease-name">${result.predicted_disease}</span><br><br>
+                            <strong>AI Explanation:</strong><br>
+                            ${result.openai_response}<br><br>
+                            <em>Image: ${result.image_name}</em>`
+                        );
+                        
+                        showSuccess('Analysis completed successfully!');
+                    } else {
+                        throw new Error(result.detail || 'Unknown error occurred');
+                    }
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    loadingIndicator.style.display = 'none';
+                    sendButton.disabled = false;
+                    showError(`Analysis failed: ${error.message}`);
+                    
+                    // Add error message to chat
+                    addMessageToChat('system', `❌ Sorry, there was an error analyzing your image: ${error.message}`);
+                }
+            }
+            
+            // Add message to chat container
+            function addMessageToChat(sender, content) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}-message`;
+                
+                const headerDiv = document.createElement('div');
+                headerDiv.className = `message-header ${sender}-header`;
+                
+                if (sender === 'user') {
+                    headerDiv.innerHTML = '<span>👤</span><span>You</span>';
+                } else {
+                    headerDiv.innerHTML = '<span>🌽</span><span>Maize Assistant</span>';
+                }
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                contentDiv.innerHTML = content;
+                
+                messageDiv.appendChild(headerDiv);
+                messageDiv.appendChild(contentDiv);
+                
+                chatContainer.appendChild(messageDiv);
+                
+                // Scroll to bottom
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+            
+            // Show debug information
+            function showDebugInfo(info) {
+                debugInfo.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${info}</div>`;
+                debugInfo.style.display = 'block';
+                debugInfo.scrollTop = debugInfo.scrollHeight;
+            }
+            
+            // Utility functions for messages
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+            
+            function hideError() {
+                errorMessage.style.display = 'none';
+            }
+            
+            function showSuccess(message) {
+                successMessage.textContent = message;
+                successMessage.style.display = 'block';
+                
+                // Auto-hide after 3 seconds
+                setTimeout(hideSuccess, 3000);
+            }
+            
+            function hideSuccess() {
+                successMessage.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
